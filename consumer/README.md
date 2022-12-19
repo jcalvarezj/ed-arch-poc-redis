@@ -4,6 +4,6 @@ Consumer service sub-project of the Event-Driven POC
 
 The root endpoint `/` displays the latest message from the **my-stream** Redis Stream
 
-The `/pop` endpoint displays and acknowledes the lastest message, removing it from the PEL
+The `/pop` endpoint displays and acknowledges the lastest message, removing it from the **my-group** consumer group's PEL
 
 Run with `uvicorn main:app --port <port number>` after activating virtual environment (using venv with the `requirements.txt` dependencies file)
