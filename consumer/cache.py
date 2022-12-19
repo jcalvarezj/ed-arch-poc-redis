@@ -34,6 +34,8 @@ class RedisConnection():
     def pull_latest_message(self):
         try:
             response = self.connection.xread({STREAM_KEY: self.last_message_id}, MAX_MESSAGES, block=BLOCKING_TIME_MS)
-            return self._decode_stream_data(response)
+            decoded_response = self._decode_stream_data(response)
+            self.last_message_id = decoded_response["id"]
+            return decoded_response
         except Exception as e:
             raise Exception(f"ERROR:\t\tAn error occurred when pulling messages from the message queue\n\t\t{e}")
