@@ -1,10 +1,11 @@
-from datetime import datetime
+from os import environ
 from fastapi import FastAPI
 from cache import RedisConnection
 
 BLUEC = "\033[96m"
 ENDC = "\033[0m"
-PRODUCER_NAME = "producer-service"
+
+SERVICE_NAME = environ.get("SERVICE_NAME", "consumer")
 
 app = FastAPI()
 
@@ -19,9 +20,5 @@ async def startup_event():
 
 @app.get("/")
 def home_handler():
-    return {"message": "Hello world"}
-
-@app.get("/produce")
-def produce_handler():
-    app.state.redis_conn.send_message(PRODUCER_NAME, f"Example message sent at {datetime.now()} !")
-    return {"message": f"Sent message to queue"}
+    message = app.state.redis_conn.pull_latest_message()
+    return {"message": f"I am the {SERVICE_NAME} service. Last pulled message: {message}"}

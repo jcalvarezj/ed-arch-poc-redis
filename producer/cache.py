@@ -2,7 +2,7 @@ from os import environ
 from redis import Redis
 from uuid import uuid4
 
-stream_key = "my-stream"
+STREAM_KEY = "my-stream"
 REDIS_HOST = "localhost"
 REDIS_PORT = 6379
 
@@ -24,6 +24,6 @@ class RedisConnection():
                 "message_id": uuid4().hex,
                 "message_body": message
             }
-            response = self.connection.xack()
+            self.connection.xadd(STREAM_KEY, message_payload)
         except Exception as e:
             raise Exception(f"ERROR:\t\tAn error occurred when sending a message to {producer_id}\n\t\t{e}")
