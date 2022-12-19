@@ -3,26 +3,27 @@ from redis import Redis
 from uuid import uuid4
 
 stream_key = "my-stream"
-producer_name = "producer-service"
-redis_host = "localhost"
-redis_port = 6379
-MAX_MESSAGES = 2
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
 
-def connect():
-    try:
-        connection = Redis(redis_host, redis_port)
-        connection.ping()
-        return connection
-    except Exception as e:
-        raise Exception(f"ERROR:\t\tAn error occurred when connecting to Redis\n\t\t{e}")
+class RedisConnection():
+    def __init__(self):
+        self._connect()
 
+    def _connect(self):
+        try:
+            self.connection = Redis(REDIS_HOST, REDIS_PORT)
+            self.connection.ping()
+        except Exception as e:
+            raise Exception(f"ERROR:\t\tAn error occurred when connecting to Redis\n\t\t{e}")
 
-def send_message(producer_id, message):
-    try:
-        message_payload = {
-            "producer_id": producer_id,
-            "message_id": uuid4().hex,
-            "message_body": message
-        }
-    except Exception as e:
-        raise Exception(f"ERROR:\t\tAn error occurred when sending the {i}-th message\n\t\t{e}")
+    def send_message(self, producer_id, message):
+        try:
+            message_payload = {
+                "producer_id": producer_id,
+                "message_id": uuid4().hex,
+                "message_body": message
+            }
+            response = self.connection.xack()
+        except Exception as e:
+            raise Exception(f"ERROR:\t\tAn error occurred when sending a message to {producer_id}\n\t\t{e}")
