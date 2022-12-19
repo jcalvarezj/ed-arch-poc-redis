@@ -14,7 +14,7 @@ app = FastAPI()
 async def startup_event():
     try:
         print(f"{BLUEC}INFO:{ENDC}\t\tAttempting Redis connection")
-        app.state.redis_conn = RedisConnection()
+        app.state.redis_conn = RedisConnection(SERVICE_NAME)
         print(f"{BLUEC}INFO:{ENDC}\t\tConnection to Redis OK!")
     except:
         raise Exception("Could not start the app!")
@@ -24,3 +24,9 @@ async def startup_event():
 def home_handler():
     message = app.state.redis_conn.pull_latest_message()
     return {"message": f"I am the {SERVICE_NAME} service. Last pulled message: {message}"}
+
+
+@app.get("/pop")
+def pop_handler():
+    message = app.state.redis_conn.pop_latest_message()
+    return {"message": f"Retrieved and popped the following message: {message}"}
