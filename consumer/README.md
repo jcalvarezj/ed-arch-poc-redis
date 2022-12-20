@@ -1,4 +1,4 @@
-# Producer
+# Consumer
 
 Consumer service sub-project of the Event-Driven POC
 
