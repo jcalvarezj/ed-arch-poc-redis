@@ -17,7 +17,7 @@ async def startup_event():
         app.state.redis_conn = RedisConnection(SERVICE_NAME)
         print(f"{BLUEC}INFO:{ENDC}\t\tConnection to Redis OK!")
     except:
-        raise Exception("Could not start the app!")
+        raise Exception("ERROR: Could not start the app!")
 
 
 @app.get("/")

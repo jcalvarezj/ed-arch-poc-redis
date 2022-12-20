@@ -34,7 +34,7 @@ class RedisConnection():
             self.connection = Redis(REDIS_HOST, REDIS_PORT)
             self.connection.ping()
         except Exception as e:
-            raise Exception(f"ERROR:\t\tAn error occurred when connecting to Redis\n\t\t{e}")
+            raise Exception(f"ERROR: An error occurred when connecting to Redis\n\t{e}")
 
 
     def _decode_stream_data(self, raw_data):
