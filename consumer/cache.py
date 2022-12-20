@@ -85,9 +85,7 @@ class RedisConnection():
         """
         Reads and acknowledges the latest message from the consumer group
         """
-        print("Creando")
         self._create_consumer_group()
-        print("Creado")
         try:
             response = self.connection.xreadgroup(GROUP_KEY, self.service_name, {STREAM_KEY: GROUP_MESSAGE_ID},
                                                   MAX_MESSAGES, block=BLOCKING_TIME_MS)
