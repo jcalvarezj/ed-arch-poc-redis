@@ -28,7 +28,7 @@ class RedisConnection():
             self.connection = Redis(REDIS_HOST, REDIS_PORT)
             self.connection.ping()
         except Exception as e:
-            raise Exception(f"ERROR:\t\tAn error occurred when connecting to Redis\n\t\t{e}")
+            raise Exception(f"ERROR: An error occurred when connecting to Redis\n\t{e}")
 
 
     def send_message(self, producer_id, message):
@@ -43,4 +43,4 @@ class RedisConnection():
             }
             self.connection.xadd(STREAM_KEY, message_payload)
         except Exception as e:
-            raise Exception(f"ERROR:\t\tAn error occurred when sending a message to {producer_id}\n\t\t{e}")
+            raise Exception(f"ERROR: An error occurred when sending a message to {producer_id}\n\t{e}")
